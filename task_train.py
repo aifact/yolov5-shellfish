@@ -22,7 +22,7 @@ def list_files(bucket_name, prefix):
     """Get partitions in prefix folder."""
     s3 = boto3.resource("s3")
     s3_bucket = s3.Bucket(bucket_name)
-    return [f.key.split(prefix)[1] for f in s3_bucket.objects.filter(Prefix=prefix).all()]
+    return [f.key for f in s3_bucket.objects.filter(Prefix=prefix).all()]
 
 
 def download_file(key, dest):
@@ -103,9 +103,11 @@ def download_data(date_partitions):
         for ttype in ["images", "labels"]:
             for date_partition in date_partitions:
                 prefix = f"{DATA_DIR}/date_partition={date_partition}/{mode}/{ttype}/"
+                dest = f"img_data/{mode}/{ttype}/"
+                print(f"  Downloading {prefix} to {dest} ...")
                 files = list_files(BUCKET_NAME, prefix)
                 for key in files:
-                    download_file(key, f"img_data/{mode}/{ttype}/{key.split(prefix)[1]}")
+                    download_file(key, f"{dest}{key.split(prefix)[1]}")
 
 
 def compute_log_metrics():

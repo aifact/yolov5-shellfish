@@ -1,10 +1,12 @@
 bdrk==0.3.2
 captum==0.2.0
 matplotlib==3.3.0
-numpy==1.19.1
+numpy==1.18.5
 opencv-python-headless==4.4.0.44
 pandas==1.0.3
+Pillow==7.2.0
 flask==1.1.2
 gunicorn==19.9.0
-torch==1.6.0
-torchvision==0.7.0
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.6.0+cpu
+torchvision==0.7.0+cpu
