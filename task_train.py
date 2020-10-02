@@ -138,10 +138,10 @@ def compute_log_metrics():
 
 def main():
     """Train"""
-    print("PyTorch Version:", torch.__version__)
+    print("\nPyTorch Version:", torch.__version__)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"  Device found = {device}")
+    print(f"Device found = {device}")
 
     if device.type == "cuda":
         print("  Number of GPUs:", torch.cuda.device_count())
@@ -169,13 +169,13 @@ def main():
     compute_log_metrics()
 
     print("\nSave artefacts and results")
-    name = params['name']
-    for fpath in os.listdir(f"./runs/exp0_{name}/"):
+    run_dir = f"./runs/exp0_{params['name']}/"
+    for fpath in os.listdir(run_dir):
         if fpath == "weights":
             # Copy best weights
-            shutil.copy2(f"./runs/exp0_{name}/weights/best.pt", "/artefact/best.pt")
-        elif os.path.isfile(fpath):
-            shutil.copy2(f"./runs/exp0_{name}/{fpath}", f"/artefact/{fpath}")
+            shutil.copy2(run_dir + "weights/best.pt", "/artefact/best.pt")
+        elif os.path.isfile(run_dir + fpath):
+            shutil.copy2(run_dir + fpath, "/artefact/" + fpath)
 
 
 if __name__ == "__main__":
