@@ -110,10 +110,10 @@ def download_data(date_partitions):
                     download_file(key, f"{dest}{key.split(prefix)[1]}")
 
 
-def compute_log_metrics():
-    """Compute and log metrics."""
+def log_metrics(run_dir):
+    """Log metrics."""
     # Validation results found in the last 7 elements of the last line of results.txt
-    with open("./runs/exp0_yolov5s_results/results.txt", "r") as f:
+    with open(run_dir + "results.txt", "r") as f:
         lines = f.readlines()
     precision, recall, map50, map50_95, val_giou, val_obj, val_cls = [float(v) for v in lines[-1].split()[-7:]]
 
@@ -166,10 +166,10 @@ def main():
     trainer(set_params(params))
 
     print("\nEvaluate")
-    compute_log_metrics()
+    run_dir = f"./runs/exp0_{params['name']}/"
+    log_metrics(run_dir)
 
     print("\nSave artefacts and results")
-    run_dir = f"./runs/exp0_{params['name']}/"
     for fpath in os.listdir(run_dir):
         if fpath == "weights":
             # Copy best weights
