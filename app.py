@@ -8,7 +8,6 @@ from PIL import Image
 from utils_image import encode_image, decode_image
 
 
-@st.cache
 def detect(image, url, token):
     encoded_img = encode_image(image)
     data = json.dumps({"encoded_img": encoded_img})
@@ -23,6 +22,7 @@ def detect(image, url, token):
 
 def main():
     st.title("Shellfish Detection")
+    st.write("**Testing HTTP endpoint deployment**")
 
     url = st.text_input("Input API URL.", "http://127.0.0.1:5000/")
     token = st.text_input("Input token.")
@@ -32,7 +32,7 @@ def main():
         image = Image.open(uploaded_file)
 
         st.subheader("Uploaded Image")
-        st.image(image, use_column_width=True)
+        st.image(image, use_column_width=False)
 
         start_time = time.time()
         resp_json = detect(image, url, token)
@@ -44,7 +44,7 @@ def main():
 
         st.subheader("Output Image with Bounding Boxes")
         output_image = decode_image(resp_json["encoded_img"])
-        st.image(Image.fromarray(output_image), use_column_width=True)
+        st.image(Image.fromarray(output_image), use_column_width=False)
 
 
 if __name__ == "__main__":
