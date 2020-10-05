@@ -10,16 +10,17 @@ from PIL import Image
 from flask import Flask, request
 
 from utils_image import encode_image, decode_image
-from models.experimental import attempt_load
 from utils.datasets import letterbox
 from utils.general import check_img_size, non_max_suppression, scale_coords, xyxy2xywh, plot_one_box
 
 MODEL_DIR = "/artefact/"
+
+# For dev only
 if os.path.exists("weights/best.pt"):
     MODEL_DIR = "weights/"
 
 DEVICE = torch.device("cpu")
-MODEL = attempt_load(MODEL_DIR + "best.pt", map_location=DEVICE)
+MODEL = torch.load(MODEL_DIR + "best.pt", map_location=DEVICE)['model'].float().fuse().eval()
 IMGSZ = check_img_size(416, s=MODEL.stride.max())
 
 # Get names and colors

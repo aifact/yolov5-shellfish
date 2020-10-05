@@ -6,36 +6,15 @@ import os
 import shutil
 import time
 
-import boto3
-import botocore
 import torch
 from bedrock_client.bedrock.api import BedrockApi
 
 from train import set_params, trainer
+from utils_aws import download_file, list_files
 
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 DATA_DIR = os.getenv("DATA_DIR")
 EXECUTION_DATE = os.getenv("EXECUTION_DATE")
-
-
-def list_files(bucket_name, prefix):
-    """Get partitions in prefix folder."""
-    s3 = boto3.resource("s3")
-    s3_bucket = s3.Bucket(bucket_name)
-    return [f.key for f in s3_bucket.objects.filter(Prefix=prefix).all()]
-
-
-def download_file(key, dest):
-    """Download file from S3."""
-    s3 = boto3.resource("s3")
-
-    try:
-        s3.Bucket(BUCKET_NAME).download_file(key, dest)
-    except botocore.exceptions.ClientError as e:
-        if e.response["Error"]["Code"] == "404":
-            print("The object does not exist.")
-        else:
-            raise
 
 
 def download_data(date_partitions):
@@ -107,7 +86,7 @@ def download_data(date_partitions):
                 print(f"  Downloading {prefix} to {dest} ...")
                 files = list_files(BUCKET_NAME, prefix)
                 for key in files:
-                    download_file(key, f"{dest}{key.split(prefix)[1]}")
+                    download_file(BUCKET_NAME, key, f"{dest}{key.split(prefix)[1]}")
 
 
 def log_metrics(run_dir):

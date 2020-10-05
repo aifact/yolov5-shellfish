@@ -1,6 +1,4 @@
 bdrk==0.3.2
-captum==0.2.0
-matplotlib==3.3.0
 numpy==1.18.5
 opencv-python-headless==4.4.0.44
 pandas==1.0.3
