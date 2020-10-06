@@ -11,17 +11,17 @@ Two additional files are added as required to train a model.
 - `bedrock.hcl`: Set Bedrock configuration
 - `requirements-train.txt`: Requirements for training
 - `task_train.py`: Training script entry point
-- `utils_aws.py`: AWS utility functions
+- `utils_s3.py`: AWS utility functions
 
 #### Serving
 - `requirements-serve.txt`: Requirements for serving
 - `serve_http.py`: Serving script
 - `utils_image.py`: Image utility functions
 
-`utils_aws.py` contains some data loading functions for data stored in S3.
+`utils_s3.py` contains some data loading functions for data stored in S3.
 - This is to help in the transition from local development to AWS enviroment.
-- For example, instead of `cv2.imread` to load images, replace it with `utils_aws.aws_imread`. 
-- Refer to `guide_utils_aws.ipynb` for more details.
+- For example, instead of `cv2.imread` to load images, replace it with `utils_s3.s3_imread`. 
+- Refer to `guide_utils_s3.ipynb` for more details.
 
 ### Testing http endpoint deployment
 A Streamlit app `app.py` is provided to test deployed endpoints with sample images from `test_images/`.

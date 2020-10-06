@@ -10,7 +10,7 @@ import torch
 from bedrock_client.bedrock.api import BedrockApi
 
 from train import set_params, trainer
-from utils_aws import download_file, list_files
+from utils_s3 import s3_download_file, s3_list_blobs
 
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 DATA_DIR = os.getenv("DATA_DIR")
@@ -82,11 +82,12 @@ def download_data(date_partitions):
         for ttype in ["images", "labels"]:
             for date_partition in date_partitions:
                 prefix = f"{DATA_DIR}/date_partition={date_partition}/{mode}/{ttype}/"
-                dest = f"img_data/{mode}/{ttype}/"
-                print(f"  Downloading {prefix} to {dest} ...")
-                files = list_files(BUCKET_NAME, prefix)
-                for key in files:
-                    download_file(BUCKET_NAME, key, f"{dest}{key.split(prefix)[1]}")
+                dest_folder = f"img_data/{mode}/{ttype}/"
+                print(f"  Downloading {prefix} to {dest_folder} ...")
+                blob_paths = s3_list_blobs(BUCKET_NAME, prefix)
+                for blob_path in blob_paths:
+                    dest = dest_folder + blob_path.split(prefix)[1]
+                    s3_download_file(BUCKET_NAME, blob_path, dest)
 
 
 def log_metrics(run_dir):

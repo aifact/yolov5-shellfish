@@ -32,7 +32,7 @@ def main():
         image = Image.open(uploaded_file)
 
         st.subheader("Uploaded Image")
-        st.image(image, use_column_width=False)
+        st.image(image, width=300)
 
         start_time = time.time()
         resp_json = detect(image, url, token)
@@ -44,7 +44,7 @@ def main():
 
         st.subheader("Output Image with Bounding Boxes")
         output_image = decode_image(resp_json["encoded_img"])
-        st.image(Image.fromarray(output_image), use_column_width=False)
+        st.image(Image.fromarray(output_image), width=300)
 
 
 if __name__ == "__main__":
