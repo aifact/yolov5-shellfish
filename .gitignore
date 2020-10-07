@@ -77,7 +77,7 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb
-!guide_utils_aws.ipynb
+!guide_utils_s3.ipynb
 
 # IPython
 profile_default/
